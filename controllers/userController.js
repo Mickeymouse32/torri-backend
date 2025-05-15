@@ -2,6 +2,7 @@ const USER = require("../models/user");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../helpers/generateToken");
 const { sendWelcomeEmail } = require("../email/sendEmail");
+const jwt = require("jsonwebtoken");
 
 const handleRegister = async (req, res) => {
   const { fullName, email, password, phoneNumber, role } = req.body;
@@ -117,9 +118,15 @@ const handleLogin = async (req, res) => {
     }
 
     //generate a token
+    const token = jwt.sign(
+      { email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "3 days" }
+    );
 
     return res.status(200).json({
       success: true,
+      token,
       user: {
         fullName: user.fullName,
         email: user.email,
