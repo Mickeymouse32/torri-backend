@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const {
   createWelcomeTemplates,
   createResetTemplate,
-} = require("./emailTemplates");
+} = require("./emailTemplate");
 
 const sendMail = async ({ to, subject, html }) => {
   const transporter = nodemailer.createTransport({
